@@ -53,14 +53,6 @@ h1 {
     background-color: #e0e0e0;
 }
 
-.cell.p1 {
-    color: #E63946;
-}
-
-.cell.p2 {
-    color: #1D3557;
-}
-
 .controls {
     display: flex;
     justify-content: space-between;
