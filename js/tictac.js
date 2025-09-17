@@ -28,52 +28,62 @@ function initializeBoard(size) {
 console.table(board);
 }
 
-function playTicTac(size) {
-    initializeBoard(size);
-    do {
-        let position = prompt(`Joueur ${player}, entrez votre position (ligne,colonne)`);
-        let positionX = parseInt(position.split(',')[0]);
-        let positionY = parseInt(position.split(',')[1]);
-        board[positionX][positionY] = player;
-        console.table(board);
-        checkWin(boardSize, positionX, positionY);
-        player = (player === 'X') ? 'O' : 'X';
+function handleMove(e) {
+    if (gameOver) return;
+
+    const row = e.target.dataset.row;
+    const col = e.target.dataset.col;
+
+    if (board[row][col] !== "-") return; // case déjà prise
+
+    board[row][col] = player;
+    e.target.textContent = player;
+    console.table(board);
+
+    checkWin(boardSize, parseInt(row), parseInt(col));
+
+    if (!gameOver) {
+        player = (player === "X") ? "O" : "X";
         movePlayer++;
-    } while (
-        !gameOver
-    );
-
-}
-
-function checkWin(boardSize, positionX, positionY) {
-    if (movePlayer == (boardSize * boardSize)) {
-        gameOver = true;
-        console.log("Match nul!");
+        playerTurn.textContent = `Joueur ${player}, c'est à vous !`;
     }
- 
-
-let rowValue = new Set();
-let colValue = new Set();
-let diagValue1 = new Set();
-let diagValue2 = new Set();
-for (let i = 0; i < boardSize; i++) {
-    rowValue.add(board[positionX][i]);
-    colValue.add(board[i][positionY]);
-    diagValue1.add(board[i][i]);
-    diagValue2.add(board[i][boardSize - 1 - i]);
-}
-if ((rowValue.size == 1 && !rowValue.has('-'))
-    || (colValue.size == 1 && !colValue.has('-'))
-    || (diagValue1.size == 1 && !diagValue1.has('-'))
-    || (diagValue2.size == 1 && !diagValue2.has('-'))) {
-    gameOver = true;
-    alert(`Le joueur ${player} a gagné!`);
 }
 
+function checkWin(size, x, y) {
+    if (movePlayer === (size * size)) {
+        gameOver = true;
+        alert("Match nul !");
+    }
+
+    let rowValue = new Set();
+    let colValue = new Set();
+    let diagValue1 = new Set();
+    let diagValue2 = new Set();
+
+    for (let i = 0; i < size; i++) {
+        rowValue.add(board[x][i]);
+        colValue.add(board[i][y]);
+        diagValue1.add(board[i][i]);
+        diagValue2.add(board[i][size - 1 - i]);
+    }
+
+    if (
+        (rowValue.size === 1 && !rowValue.has("-")) ||
+        (colValue.size === 1 && !colValue.has("-")) ||
+        (diagValue1.size === 1 && !diagValue1.has("-")) ||
+        (diagValue2.size === 1 && !diagValue2.has("-"))
+    ) {
+        gameOver = true;
+        alert(`Le joueur ${player} a gagné !`);
+    }
 }
 
+document.getElementById("restart").addEventListener("click", () => {
+    gameOver = false;
+    player = "X";
+    movePlayer = 1;
+    playerTurn.textContent = `Joueur ${player}, c'est à vous !`;
+    initializeBoard(boardSize);
+});
 
-
-let size = prompt("Entrez la taille du plateau (3 pour 3x3, 4 pour 4x4, etc.)");
-
-playTicTac(size);
+initializeBoard(boardSize);
