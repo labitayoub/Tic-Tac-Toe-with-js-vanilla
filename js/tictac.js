@@ -6,6 +6,9 @@ let boardSize = 3;
 let winLength = 3;
 let p1Symbol = 'X';
 let p2Symbol = 'O';
+let player1Score = 0;
+let player2Score = 0;
+let tiesScore = 0;
 
 const gameBoard = document.getElementById('game-board');
 const playerTurn = document.getElementById('player-turn');
@@ -22,7 +25,7 @@ const p2SymbolInput = document.getElementById('p2-symbol');
 const winLengthInput = document.getElementById('win-length');
 
 
-%
+
 
     saveSettingsBtn.addEventListener('click', () => {
         const n = parseInt(gridSizeInput.value, 10);
@@ -55,6 +58,43 @@ const winLengthInput = document.getElementById('win-length');
         }
     });
 
+
+function updateScores() {
+    scoreP1.textContent = player1Score;
+    scoreP2.textContent = player2Score;
+    scoreTies.textContent = tiesScore;
+    saveScoresToLocalStorage();
+}
+
+function saveScoresToLocalStorage() {
+    localStorage.setItem('player1Score', player1Score);
+    localStorage.setItem('player2Score', player2Score);
+    localStorage.setItem('tiesScore', tiesScore);
+}
+
+function loadScoresFromLocalStorage() {
+    const savedP1Score = localStorage.getItem('player1Score');
+    const savedP2Score = localStorage.getItem('player2Score');
+    const savedTiesScore = localStorage.getItem('tiesScore');
+    
+    if (savedP1Score !== null) player1Score = parseInt(savedP1Score, 10);
+    if (savedP2Score !== null) player2Score = parseInt(savedP2Score, 10);
+    if (savedTiesScore !== null) tiesScore = parseInt(savedTiesScore, 10);
+}
+
+function clearScoresFromLocalStorage() {
+    localStorage.removeItem('player1Score');
+    localStorage.removeItem('player2Score');
+    localStorage.removeItem('tiesScore');
+    
+    player1Score = 0;
+    player2Score = 0;
+    tiesScore = 0;
+    
+    updateScores();
+    
+    alert('Scores supprimés avec succès !');
+}
 
 function initializeBoard(size) {
     board = [];
@@ -101,6 +141,8 @@ function handleMove(e) {
 function checkWin(size, x, y) {
     if (movePlayer === (size * size)) {
         gameOver = true;
+        tiesScore++;
+        updateScores();
         alert("Match nul !");
     }
 
@@ -123,6 +165,12 @@ function checkWin(size, x, y) {
         (diagValue2.size === 1 && !diagValue2.has("-"))
     ) {
         gameOver = true;
+        if (player === p1Symbol) {
+            player1Score++;
+        } else {
+            player2Score++;
+        }
+        updateScores();
         alert(`Le joueur ${player} a gagné !`);
     }
 }
@@ -136,5 +184,13 @@ document.getElementById("restart").addEventListener("click", () => {
     initializeBoard(boardSize);
 });
 
+document.getElementById("reset-scores").addEventListener("click", () => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer tous les scores sauvegardés ? Cette action est irréversible.')) {
+        clearScoresFromLocalStorage();
+    }
+});
+
 player = p1Symbol;
 initializeBoard(boardSize);
+loadScoresFromLocalStorage();
+updateScores();
