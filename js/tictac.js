@@ -3,9 +3,58 @@ let board = [];
 let gameOver = false;
 let movePlayer = 1;
 let boardSize = 3;
+let winLength = 3;
+let p1Symbol = 'X';
+let p2Symbol = 'O';
 
 const gameBoard = document.getElementById('game-board');
 const playerTurn = document.getElementById('player-turn');
+
+const gridSizeInput = document.getElementById('grid-size');
+const saveSettingsBtn = document.getElementById('save-settings');
+const scoreP1 = document.getElementById('score-p1');
+const scoreP2 = document.getElementById('score-p2');
+const scoreTies = document.getElementById('score-ties');
+const settings = document.getElementById('settings');
+const toggleSettingsBtn = document.getElementById('toggle-settings');
+const p1SymbolInput = document.getElementById('p1-symbol');
+const p2SymbolInput = document.getElementById('p2-symbol');
+const winLengthInput = document.getElementById('win-length');
+
+
+%
+
+    saveSettingsBtn.addEventListener('click', () => {
+        const n = parseInt(gridSizeInput.value, 10);
+        if (Number.isNaN(n)) return;
+
+        let newSize = n;
+        if (newSize < 3) newSize = 3;
+        if (newSize > 10) newSize = 10;
+
+        gridSizeInput.value = newSize;
+
+        p1Symbol = p1SymbolInput.value || 'X';
+        p2Symbol = p2SymbolInput.value || 'O';
+
+        boardSize = newSize;
+        gameOver = false;
+        player = p1Symbol;
+        movePlayer = 1;
+        playerTurn.textContent = `Joueur ${player}, c'est à vous !`;
+        initializeBoard(boardSize);
+    });
+
+
+    toggleSettingsBtn.addEventListener('click', () => {
+      
+        if (!settings.classList.contains('hidden')) {
+            settings.classList.add('hidden');
+        }else {
+            settings.classList.remove('hidden');
+        }
+    });
+
 
 function initializeBoard(size) {
     board = [];
@@ -16,16 +65,16 @@ function initializeBoard(size) {
         let boardRow = [];
         for (let col = 0; col < size; col++) {
             boardRow.push('-');
-        const cell = document.createElement('div');
-        cell.classList.add('cell');
-        cell.dataset.row = row;
-        cell.dataset.col = col;
-        cell.addEventListener('click', handleCellClick);
-        gameBoard.appendChild(cell);
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.dataset.row = row;
+            cell.dataset.col = col;
+            cell.addEventListener('click', handleMove);
+            gameBoard.appendChild(cell);
+        }
+        board.push(boardRow);
     }
-    board.push(boardRow);
-}
-console.table(board);
+    console.table(board);
 }
 
 function handleMove(e) {
@@ -34,7 +83,7 @@ function handleMove(e) {
     const row = e.target.dataset.row;
     const col = e.target.dataset.col;
 
-    if (board[row][col] !== "-") return; // case déjà prise
+    if (board[row][col] !== "-") return;
 
     board[row][col] = player;
     e.target.textContent = player;
@@ -43,7 +92,7 @@ function handleMove(e) {
     checkWin(boardSize, parseInt(row), parseInt(col));
 
     if (!gameOver) {
-        player = (player === "X") ? "O" : "X";
+        player = (player === p1Symbol) ? p2Symbol : p1Symbol;
         movePlayer++;
         playerTurn.textContent = `Joueur ${player}, c'est à vous !`;
     }
@@ -78,12 +127,14 @@ function checkWin(size, x, y) {
     }
 }
 
+
 document.getElementById("restart").addEventListener("click", () => {
     gameOver = false;
-    player = "X";
+    player = p1Symbol;
     movePlayer = 1;
     playerTurn.textContent = `Joueur ${player}, c'est à vous !`;
     initializeBoard(boardSize);
 });
 
+player = p1Symbol;
 initializeBoard(boardSize);
