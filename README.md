@@ -1,6 +1,21 @@
 # Tic Tac Toe (Morpion) – Vanilla JS
 
-Site déployé : https://tic-tac-2025.vercel.app/
+<div align="center">
+
+<h3>🚀 Jouer maintenant</h3>
+
+<a href="https://tic-tac-2025.vercel.app/" target="_blank">
+<img alt="Jouer en ligne" src="https://img.shields.io/badge/PLAY-ONLINE-green?style=for-the-badge&logo=javascript" />
+</a>
+
+<br/>
+<strong><a href="https://tic-tac-2025.vercel.app/" target="_blank">https://tic-tac-2025.vercel.app/</a></strong>
+
+<p><em>Version déployée sur Vercel – chargement instantané, rien à installer.</em></p>
+
+</div>
+
+---
 
 
 ## 🎯 Objectif
