@@ -17,6 +17,7 @@
 
 ---
 
+> 📄 Documentation détaillée : voir `DOCUMENTATION_FONCTIONNELLE.md` pour la description complète des règles, de la logique et des pistes d'amélioration.
 
 ## 🎯 Objectif
 Jeu classique de Tic Tac Toe (Morpion) réalisé en **HTML / CSS / JavaScript vanilla**. Deux joueurs s'affrontent (X et O). Le premier qui aligne 3 symboles (horizontalement, verticalement ou en diagonale) gagne. Si la grille est pleine sans gagnant : match nul.
