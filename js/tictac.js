@@ -102,7 +102,14 @@ function checkForWinOrTie(lastMoveRow, lastMoveCol) {
         isGameOver = true;
         tiesScore++;
         updateScores();
-        alert("Match nul !");
+        Swal.fire({
+            icon: 'info',
+            title: 'Match nul',
+            text: 'Aucune victoire cette fois.',
+            confirmButtonText: 'Rejouer'
+        }).then(() => {
+            restartGame();
+        });
         return;
     }
 
@@ -203,7 +210,19 @@ function declareWinner() {
         player2Score++;
     }
     updateScores();
-    alert(`Le joueur ${currentPlayer === player1Symbol ? '1' : '2'} (${currentPlayer}) a gagné !`);
+    const winnerNum = currentPlayer === player1Symbol ? '1' : '2';
+    Swal.fire({
+        icon: 'success',
+        title: 'Victoire !',
+        html: `Le joueur <strong>${winnerNum}</strong> (${currentPlayer}) a gagné !`,
+        showDenyButton: true,
+        confirmButtonText: 'Rejouer',
+        denyButtonText: 'Fermer'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            restartGame();
+        }
+    });
 }
 
 
@@ -244,14 +263,27 @@ function clearScoresFromLocalStorage() {
     tiesScore = 0;
     
     updateScores();
-    
-    alert('Scores supprimés avec succès !');
+    Swal.fire({
+        icon: 'success',
+        title: 'Scores réinitialisés',
+        timer: 1500,
+        showConfirmButton: false
+    });
 }
 
 function confirmResetScores() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer tous les scores sauvegardés ? Cette action est irréversible.')) {
-        clearScoresFromLocalStorage();
-    }
+    Swal.fire({
+        icon: 'warning',
+        title: 'Réinitialiser les scores ?',
+        text: 'Cette action est irréversible.',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, réinitialiser',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            clearScoresFromLocalStorage();
+        }
+    });
 }
 
 
