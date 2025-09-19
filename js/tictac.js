@@ -42,9 +42,7 @@ function initializeGame() {
     kValueElement.textContent = symbolsToWin;
 }
 
-/**
- * Create the game board based on the specified size
- */
+
 function initializeBoard(size) {
     gameBoard = [];
     boardElement.innerHTML = '';
@@ -67,9 +65,7 @@ function initializeBoard(size) {
     isGameOver = false;
 }
 
-/**
- * Handle player moves when cells are clicked
- */
+
 function handleCellClick(event) {
     if (isGameOver) return;
 
@@ -78,12 +74,10 @@ function handleCellClick(event) {
 
     if (gameBoard[row][col] !== "-") return;
 
-    // Update board state and UI
     gameBoard[row][col] = currentPlayer;
     event.target.textContent = currentPlayer;
     moveCount++;
 
-    // Check if the current move resulted in a win
     checkForWinOrTie(row, col);
 
     if (!isGameOver) {
@@ -92,25 +86,18 @@ function handleCellClick(event) {
     }
 }
 
-/**
- * Switch to the next player
- */
+
 function switchPlayer() {
     currentPlayer = (currentPlayer === player1Symbol) ? player2Symbol : player1Symbol;
 }
 
-/**
- * Update the display showing whose turn it is
- */
+
 function updatePlayerTurn() {
     playerTurnElement.textContent = `Joueur ${currentPlayer === player1Symbol ? '1' : '2'} (${currentPlayer}), c'est à vous !`;
 }
 
-/**
- * Check if the game has been won or ended in a tie
- */
+
 function checkForWinOrTie(lastMoveRow, lastMoveCol) {
-    // Check for tie
     if (moveCount === (gridSize * gridSize)) {
         isGameOver = true;
         tiesScore++;
@@ -119,15 +106,12 @@ function checkForWinOrTie(lastMoveRow, lastMoveCol) {
         return;
     }
 
-    // Check for win conditions
     if (checkAllWinConditions()) {
         declareWinner();
     }
 }
 
-/**
- * Check all possible win conditions (rows, columns, diagonals)
- */
+
 function checkAllWinConditions() {
     return (
         checkRowsForWin() ||
@@ -137,9 +121,7 @@ function checkAllWinConditions() {
     );
 }
 
-/**
- * Check rows for winning combinations
- */
+
 function checkRowsForWin() {
     for (let row = 0; row < gridSize; row++) {
         if (checkLineForWin(gameBoard[row])) {
@@ -149,9 +131,6 @@ function checkRowsForWin() {
     return false;
 }
 
-/**
- * Check columns for winning combinations
- */
 function checkColumnsForWin() {
     for (let col = 0; col < gridSize; col++) {
         let column = [];
@@ -165,9 +144,7 @@ function checkColumnsForWin() {
     return false;
 }
 
-/**
- * Check main diagonals (top-left to bottom-right) for winning combinations
- */
+
 function checkMainDiagonalsForWin() {
     for (let startRow = 0; startRow <= gridSize - symbolsToWin; startRow++) {
         for (let startCol = 0; startCol <= gridSize - symbolsToWin; startCol++) {
@@ -183,9 +160,7 @@ function checkMainDiagonalsForWin() {
     return false;
 }
 
-/**
- * Check anti-diagonals (top-right to bottom-left) for winning combinations
- */
+
 function checkAntiDiagonalsForWin() {
     for (let startRow = 0; startRow <= gridSize - symbolsToWin; startRow++) {
         for (let startCol = symbolsToWin - 1; startCol < gridSize; startCol++) {
@@ -201,9 +176,7 @@ function checkAntiDiagonalsForWin() {
     return false;
 }
 
-/**
- * Check if a line (row, column or diagonal) contains a winning combination
- */
+
 function checkLineForWin(line) {
     for (let i = 0; i <= line.length - symbolsToWin; i++) {
         let symbol = line[i];
@@ -221,9 +194,7 @@ function checkLineForWin(line) {
     return false;
 }
 
-/**
- * Handle the win condition
- */
+
 function declareWinner() {
     isGameOver = true;
     if (currentPlayer === player1Symbol) {
@@ -235,9 +206,8 @@ function declareWinner() {
     alert(`Le joueur ${currentPlayer === player1Symbol ? '1' : '2'} (${currentPlayer}) a gagné !`);
 }
 
-/**
- * Update the scoreboard display
- */
+
+
 function updateScores() {
     scorePlayer1Element.textContent = player1Score;
     scorePlayer2Element.textContent = player2Score;
@@ -245,18 +215,14 @@ function updateScores() {
     saveScoresToLocalStorage();
 }
 
-/**
- * Save game scores to local storage
- */
+
 function saveScoresToLocalStorage() {
     localStorage.setItem('player1Score', player1Score);
     localStorage.setItem('player2Score', player2Score);
     localStorage.setItem('tiesScore', tiesScore);
 }
 
-/**
- * Load game scores from local storage
- */
+
 function loadScoresFromLocalStorage() {
     const savedP1Score = localStorage.getItem('player1Score');
     const savedP2Score = localStorage.getItem('player2Score');
@@ -267,9 +233,7 @@ function loadScoresFromLocalStorage() {
     if (savedTiesScore !== null) tiesScore = parseInt(savedTiesScore, 10);
 }
 
-/**
- * Clear saved scores from local storage
- */
+
 function clearScoresFromLocalStorage() {
     localStorage.removeItem('player1Score');
     localStorage.removeItem('player2Score');
@@ -284,55 +248,43 @@ function clearScoresFromLocalStorage() {
     alert('Scores supprimés avec succès !');
 }
 
-/**
- * Show confirmation dialog before resetting scores
- */
 function confirmResetScores() {
     if (confirm('Êtes-vous sûr de vouloir supprimer tous les scores sauvegardés ? Cette action est irréversible.')) {
         clearScoresFromLocalStorage();
     }
 }
 
-/**
- * Toggle visibility of settings panel
- */
+
 function toggleSettings() {
     settingsPanel.classList.toggle('hidden');
 }
 
-/**
- * Save game settings and restart with new configuration
- */
+
 function saveSettings() {
-    // Get and validate grid size
+
     const newSize = Math.max(3, Math.min(10, parseInt(gridSizeInput.value, 10) || 3));
     
-    // Get and validate win length
+
     const newWinLength = Math.max(2, Math.min(newSize, parseInt(winLengthInput.value, 10) || 3));
     
-    // Update input values to validated values
+
     gridSizeInput.value = newSize;
     winLengthInput.value = newWinLength;
     
-    // Save player symbols
     player1Symbol = player1SymbolInput.value || 'X';
     player2Symbol = player2SymbolInput.value || 'O';
     
-    // Update game state
     gridSize = newSize;
     symbolsToWin = newWinLength;
     currentPlayer = player1Symbol;
     
-    // Update UI
+ 
     kValueElement.textContent = symbolsToWin;
     
-    // Restart game with new settings
     restartGame();
 }
 
-/**
- * Restart the game with current settings
- */
+
 function restartGame() {
     isGameOver = false;
     moveCount = 0;
@@ -341,5 +293,4 @@ function restartGame() {
     initializeBoard(gridSize);
 }
 
-// Initialize the game when script loads
 initializeGame();
