@@ -86,16 +86,7 @@ Pas de persistance de : taille de grille, symboles, `k` (réinitialisés à l'ou
 | Reset scores | SweetAlert warning → confirmation → success. |
 | Paramètres | Panneau masquable (toggle). |
 
-## 10. Limitations / Contraintes actuelles
-- Pas de validation empêchant symboles identiques pour les deux joueurs.
-- Le redémarrage efface uniquement la grille, pas les scores (comportement voulu).
-- Pas d'historique des parties / pas d'undo.
-- Pas d'IA (jeu uniquement 2 humains locaux).
-- Accessibilité limitée (pas de navigation clavier / rôles ARIA). 
-- Aucune prévention anti double clic ultra rapide (mais inoffensif dans ce contexte).
-- Les paramètres ne sont pas persistés entre rafraîchissements.
-
-## 11. Qualité & Séparation des responsabilités
+## 10. Qualité & Séparation des responsabilités
 | Domaine | Centralisation | Commentaire |
 |---------|----------------|-------------|
 | État jeu | Variables globales | Simple mais rend difficile l'extensibilité. |
@@ -103,27 +94,19 @@ Pas de persistance de : taille de grille, symboles, `k` (réinitialisés à l'ou
 | Logique victoire | Fonctions pures utilisant `gameBoard` | Testable si isolé. |
 | Persistance | `localStorage` direct | Couplage possible à abstraire plus tard. |
 
-## 13. Scénarios d'erreurs & gestion
-| Scénario | Gestion actuelle | Suggestion future |
-|----------|------------------|-------------------|
-| Case déjà remplie | Ignorée silencieusement | Ajouter un léger feedback visuel. |
-| Symboles identiques | Possible | Bloquer sauvegarde / avertir. |
-| `k > n` demandé | Corrigé par bornage | Afficher message explicatif. |
-| LocalStorage indisponible | Non géré | Try/catch avec fallback mémoire. |
-
-## 14. Sécurité & Performance
+## 11. Sécurité & Performance
 - Aucune interaction réseau → surface d'attaque minimale.
 - Entrées utilisateurs très limitées (1 caractère) → faible risque XSS (mais échapper si évolutions).
 - Complexité acceptable jusqu'à 10x10 (`O(n^2 * k)` approx). Performance largement suffisante.
 
-## 15. Glossaire
+## 12. Glossaire
 | Terme | Définition |
 |-------|------------|
 | `n` | Taille de la grille (nombre de lignes/colonnes). |
 | `k` | Longueur nécessaire d'un alignement gagnant. |
 | Match nul | Aucun alignement trouvé quand la grille est pleine. |
 
-## 16. Résumé rapide (TL;DR)
+## 13. Résumé rapide (TL;DR)
 Une grille dynamique, deux joueurs, paramétrage basique, détection générique d'alignements, persistance des scores uniquement. Architecture simple mais extensible avec refactorisation modulaire.
 
 ---
