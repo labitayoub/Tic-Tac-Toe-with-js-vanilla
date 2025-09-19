@@ -188,7 +188,6 @@ function checkLineForWin(line) {
     for (let i = 0; i <= line.length - symbolsToWin; i++) {
         let symbol = line[i];
         if (symbol === '-') continue;
-        
         let allSame = true;
         for (let j = 1; j < symbolsToWin; j++) {
             if (line[i + j] !== symbol) {
