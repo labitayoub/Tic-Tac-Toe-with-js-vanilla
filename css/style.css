@@ -32,8 +32,11 @@ h1 {
 #game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 20px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .cell {
@@ -42,7 +45,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;
@@ -123,9 +126,9 @@ button:hover {
         font-size:0.95rem;
         padding:10px;
     }
-    #game-board { gap:6px; }
+    #game-board { gap:4px; }
     .cell {
-        font-size:1.7rem;
+        font-size:1.3rem;
     }
     .setting-group {
         flex-direction:column;
@@ -138,6 +141,6 @@ button:hover {
 
 @media (max-width:380px) {
     h1 { font-size:1.4rem; }
-    .cell { font-size:1.4rem; }
+    .cell { font-size:1.1rem; }
     .controls button { font-size:0.85rem; padding:8px 10px; }
 }

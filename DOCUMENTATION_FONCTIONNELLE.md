@@ -109,5 +109,18 @@ Pas de persistance de : taille de grille, symboles, `k` (réinitialisés à l'ou
 ## 13. Résumé rapide (TL;DR)
 Une grille dynamique, deux joueurs, paramétrage basique, détection générique d'alignements, persistance des scores uniquement. Architecture simple mais extensible avec refactorisation modulaire.
 
+## Logique de vérification de victoire (checkwin)
+La fonction de vérification de victoire, souvent désignée par « checkwin », est au cœur de la logique du jeu Tic Tac Toe. Son rôle est de déterminer si un joueur a remporté la partie en alignant trois symboles identiques.
+
+Les principales vérifications réalisées par cette logique incluent :
+
+- **Conditions horizontales** : Vérification de chaque ligne pour identifier si tous les éléments d'une même ligne sont identiques.
+- **Conditions verticales** : Contrôle de chaque colonne pour s'assurer que tous les éléments d'une même colonne portent le même symbole.
+- **Conditions diagonales** : Examen des deux diagonales du tableau afin de détecter une séquence homogène de symboles.
+
+En effectuant ces contrôles, la fonction détermine rapidement la présence d'une ligne gagnante et signale la victoire du joueur correspondant. Cette logique est implémentée de manière optimisée afin d'éviter les vérifications redondantes et d'assurer une réponse immédiate dès qu'une condition de victoire est remplie.
+
+*Note : La documentation se concentre sur la description du comportement et de l'algorithme, sans exposer le code source détaillé de l'implémentation.*
+
 ---
 Documentation rédigée le 19/09/2025.
